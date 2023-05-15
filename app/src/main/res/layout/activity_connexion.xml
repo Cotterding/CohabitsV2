@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ConnexionActivity"
+    android:background="@color/purple_200"
+    >
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="430dp"
+        android:layout_gravity="center"
+        android:background="@drawable/edit_edittext"
+        app:cardCornerRadius="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:ignore="MissingConstraints"
+        >
+
+        <TextView
+            android:id="@+id/textViewConnexion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:text="Connexion"
+            android:textColor="#0E194D"
+            android:textSize="38sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/textViewConnectezVousPourContinuer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewConnectezVousPourContinuer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="25dp"
+            android:text="Connectez vous pour continuer"
+            android:textSize="10sp"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="80dp"
+            app:layout_constraintBottom_toTopOf="@+id/textViewEmail"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.52"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/editText_emailAddress_identification"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/edit_edittext"
+            android:layout_marginTop="155dp"
+            android:ems="10"
+            android:hint="hello@reallygreatsite.com"
+            android:inputType="textEmailAddress"
+            android:paddingLeft="10dp"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/textViewMDP"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="130dp"
+            android:layout_marginBottom="10dp"
+            android:text="Email"
+            android:textColor="#0E194D"
+            android:textSize="12dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/editText_emailAddress_identification"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewMDP"
+            android:textColor="#0E194D"
+            android:layout_width="wrap_content"
+            android:layout_height="19dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="10dp"
+            android:text="Mot de passe"
+            android:textSize="12dp"
+            android:layout_marginTop="215dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/editText_Password_identification"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/editText_Password_identification"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/edit_edittext"
+            android:ems="10"
+            android:hint="**********"
+            android:inputType="textPassword"
+            android:paddingLeft="10dp"
+            android:layout_marginTop="240dp"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/button_connexion"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/button_connexion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="70dp"
+            android:layout_marginEnd="70dp"
+            android:background="@drawable/edit_button"
+            android:text="Continuer"
+            android:textAllCaps="false"
+            android:textSize="15sp"
+            android:layout_marginTop="310dp"
+            app:layout_constraintBottom_toTopOf="@+id/button_noCompte"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+        <Button
+            android:id="@+id/button_noCompte"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="370dp"
+            android:layout_marginStart="100dp"
+            android:layout_marginEnd="100dp"
+            android:background="@drawable/edit_button_creer_compte"
+            android:text="Je n'ai pas de compte"
+            android:textAllCaps="false"
+            android:textColor="#0E194D"
+            android:textStyle="bold"
+            android:textSize="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.491"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+    </androidx.cardview.widget.CardView>
+
+
+    <ImageView
+        android:id="@+id/imageViewLogoConnexion"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/card_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.565"
+        app:srcCompat="@drawable/logo" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

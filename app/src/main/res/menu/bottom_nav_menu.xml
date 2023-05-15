@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/baseline_home_24"
+        android:title="@string/title_home" />
+    <item
+        android:id="@+id/navigation_statut"
+        android:icon="@drawable/baseline_person_pin_24"
+        android:title="@string/title_statut"/>
+
+    <item
+        android:id="@+id/navigation_tache"
+        android:icon="@drawable/baseline_rule_24"
+        android:title="@string/title_tache" />
+
+    <item
+        android:id="@+id/navigation_comptes"
+        android:icon="@drawable/baseline_monetization_on_24"
+        android:title="@string/title_comptes" />
+</menu>
