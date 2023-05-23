@@ -49,7 +49,7 @@ class ConnexionActivity : AppCompatActivity() {
             }
 
             //use a "toast" object to display the text of the active port number
-            var toast: Toast = Toast.makeText(applicationContext, app.httpPort.toString(), Toast.LENGTH_SHORT)
+            /*var toast: Toast = Toast.makeText(applicationContext, app.httpPort.toString(), Toast.LENGTH_SHORT)
             //get down into the Toast object
             //because we want big characters displayed
             var layout: RelativeLayout = toast.view as RelativeLayout
@@ -59,7 +59,7 @@ class ConnexionActivity : AppCompatActivity() {
             //and set the toast position on screen
             toast.setGravity(Gravity.TOP, 0, 200)
             //ok, time to display the toast now
-            toast.show()
+            toast.show()*/
         }
 
         //button "Je n'ai pas de compte"
@@ -74,7 +74,7 @@ class ConnexionActivity : AppCompatActivity() {
         val logonButton = findViewById<Button>(R.id.button_connexion)
         logonButton.setOnClickListener {
 
-            //get data from editText fields
+            /*//get data from editText fields
             var email = findViewById<EditText>(R.id.editText_emailAddress_identification).text.toString()
             var pwd = findViewById<EditText>(R.id.editText_Password_identification).text.toString()
 
@@ -93,18 +93,18 @@ class ConnexionActivity : AppCompatActivity() {
                 //todo: display the correct message if connection was refused
                 Toast.makeText(applicationContext, response.getString("message"), Toast.LENGTH_SHORT).show()
                 //print the response in the android studio trace window (when debugging)
-                println(response)
+                println(response)*/
 
 		//launch the home activity
             	val intent = Intent(this, MainActivity::class.java)
             	startActivity(intent)
             }
-            app.request(url, data, ::done)
+//            app.request(url, data, ::done)
 
 
 
 
-        }
+        //}
 
         val cardView = findViewById<CardView>(R.id.card_view)
         cardView.setBackgroundResource(R.drawable.card_view_droit)

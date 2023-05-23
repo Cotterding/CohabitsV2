@@ -24,6 +24,7 @@ class StatutFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    lateinit var recyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,28 +39,8 @@ class StatutFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        for (i in 1..5) {
-            val linearLayout = LinearLayout(requireContext())
-            val layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            linearLayout.layoutParams = layoutParams
-            linearLayout.orientation = LinearLayout.HORIZONTAL
 
-            val textView = TextView(requireContext())
-            val textViewParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            textViewParams.marginStart = 16
-            textView.layoutParams = textViewParams
-            textView.text = "TextView $i"
 
-            linearLayout.addView(textView)
-            val parentLayout = requireView().findViewById<LinearLayout>(R.id.statutsLayout)
-            parentLayout.addView(linearLayout)
-        }
 
 
         return inflater.inflate(R.layout.fragment_statut, container, false)
