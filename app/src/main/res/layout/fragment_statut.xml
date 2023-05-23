@@ -3,12 +3,106 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".StatutFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/textViewStatut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:text="Statuts"
+        android:textColor="#0E194D"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+    
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="statut" />
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:scrollbars="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/statutsLayout">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/box">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="40dp"
+                android:text="Je ne suis pas à la colocation"
+                android:textColor="#fdfdfd"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:layout_constraintEnd_toEndOf="@id/linearLayout"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="20dp"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/box">
+
+
+                <TextView
+                    android:id="@+id/textViewStatut2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginStart="40dp"
+                    android:text="Coloc1 est à la colocation"
+                    android:textColor="#fdfdfd"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/status_box"
+                    android:padding="5dp"
+                    android:src="@drawable/baseline_home_purple"
+                    app:layout_constraintEnd_toEndOf="@id/linearLayout2"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                     />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+        
+    </ScrollView>
+        
 </FrameLayout>

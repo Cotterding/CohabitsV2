@@ -1,10 +1,14 @@
 package ovh.cohabits.cohabit1
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,6 +38,30 @@ class StatutFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        for (i in 1..5) {
+            val linearLayout = LinearLayout(requireContext())
+            val layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            linearLayout.layoutParams = layoutParams
+            linearLayout.orientation = LinearLayout.HORIZONTAL
+
+            val textView = TextView(requireContext())
+            val textViewParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            textViewParams.marginStart = 16
+            textView.layoutParams = textViewParams
+            textView.text = "TextView $i"
+
+            linearLayout.addView(textView)
+            val parentLayout = requireView().findViewById<LinearLayout>(R.id.statutsLayout)
+            parentLayout.addView(linearLayout)
+        }
+
+
         return inflater.inflate(R.layout.fragment_statut, container, false)
     }
 
