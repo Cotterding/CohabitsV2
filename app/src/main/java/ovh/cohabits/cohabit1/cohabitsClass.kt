@@ -46,7 +46,7 @@ class cohabitsClass() : android.app.Application() {
     //or any development server from 8081 to 8085
     //this value is the active port number
     //it may be changed by clicking on the app logo in the connection Activity
-    var httpPort: Int = 8080
+    var httpPort: Int = 8083
 
     //cohabits backend server IP address
     val serveraddr = "51.38.238.103"

@@ -42,11 +42,11 @@ class ConnexionActivity : AppCompatActivity() {
         //add the callback function for a click on the logo
         logo.setOnClickListener {
             //change the port number
-            app.httpPort += 1
-            if (app.httpPort == 8087) {
-                //After 8086, go back to 8080
-                app.httpPort = 8080
-            }
+            app.httpPort = 8083
+//            if (app.httpPort == 8087) {
+//                //After 8086, go back to 8080
+//                app.httpPort = 8080
+//            }
 
             //use a "toast" object to display the text of the active port number
             /*var toast: Toast = Toast.makeText(applicationContext, app.httpPort.toString(), Toast.LENGTH_SHORT)
@@ -74,7 +74,7 @@ class ConnexionActivity : AppCompatActivity() {
         val logonButton = findViewById<Button>(R.id.button_connexion)
         logonButton.setOnClickListener {
 
-            /*//get data from editText fields
+
             var email = findViewById<EditText>(R.id.editText_emailAddress_identification).text.toString()
             var pwd = findViewById<EditText>(R.id.editText_Password_identification).text.toString()
 
@@ -93,18 +93,18 @@ class ConnexionActivity : AppCompatActivity() {
                 //todo: display the correct message if connection was refused
                 Toast.makeText(applicationContext, response.getString("message"), Toast.LENGTH_SHORT).show()
                 //print the response in the android studio trace window (when debugging)
-                println(response)*/
+                println(response)
 
 		//launch the home activity
-            	val intent = Intent(this, MainActivity::class.java)
+            	val intent = Intent(this, ColocStatus::class.java)
             	startActivity(intent)
             }
-//            app.request(url, data, ::done)
+           app.request(url, data, ::done)
 
 
 
 
-        //}
+        }
 
         val cardView = findViewById<CardView>(R.id.card_view)
         cardView.setBackgroundResource(R.drawable.card_view_droit)
