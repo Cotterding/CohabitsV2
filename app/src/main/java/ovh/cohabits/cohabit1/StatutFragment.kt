@@ -1,68 +1,120 @@
 package ovh.cohabits.cohabit1
 
-import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.Switch
+import android.widget.Toast
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.Request
+import com.android.volley.RequestQueue
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
+import org.json.JSONObject
+import ovh.cohabits.cohabit1.databinding.FragmentStatutBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [StatutFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class StatutFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-    lateinit var recyclerView: RecyclerView
+    private var _binding: FragmentStatutBinding? = null
+    private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: StatutAdapter
+
+    val students : ArrayList<StatutAdapter.StatusObject> = arrayListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+        _binding = FragmentStatutBinding.inflate(inflater, container, false)
+        val binding = _binding ?: return null
+        val root: View = binding.root
 
-
-
-
-        return inflater.inflate(R.layout.fragment_statut, container, false)
+        recyclerView = binding.recyclerViewStatut
+        synchro()
+        adapter = StatutAdapter(students, requireActivity().applicationContext)
+        return root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment StatutFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            StatutFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    private fun synchro() {
+
+        val app = (requireActivity().application as cohabitsClass)
+        val listState : ArrayList<StatutAdapter.StatusObject> = arrayListOf()
+        val requestQueue = app.queue ?: Volley.newRequestQueue(app)
+        app.queue = requestQueue
+        val stateSwitchBox = binding.switchStatut
+        val urlInside = "/student/inside"
+        val urlOutside = "/student/outside"
+        val dataSessionSwitch = JSONObject()
+        dataSessionSwitch.put("session", app.session)
+
+        fun done(response: JSONObject) {
+            //display the response message with a popup on screen
+            //todo: change activity is connection was successful
+            //todo: display the correct message if connection was refused
+            Toast.makeText(app, response.getString("message"), Toast.LENGTH_SHORT)
+                .show()
+            //print the response in the android studio trace window (when debugging)
+            println(response)
+
+        }
+
+
+        fun getStatusColoc() {
+            recyclerView.layoutManager = GridLayoutManager(app, GridLayoutManager.VERTICAL)
+            val command = "/flat/info"
+            val url = "http://" + app.serveraddr + ":" + app.httpPort + command
+            val data = JSONObject()
+            data.put("session",app?.session )
+
+
+            val jsonObjectRequest = JsonObjectRequest(Request.Method.DEPRECATED_GET_OR_POST, url, data,
+                Response.Listener {
+                    Toast.makeText(app, "SUCCESSFULL", Toast.LENGTH_SHORT).show()
+                    for(i in 0 until it.getJSONArray("inside").length()) {
+                        val stateJson = it.getJSONArray("inside").getString(i)
+                        val stateObject = StatutAdapter.StatusObject()
+                        stateObject.setInside(stateJson)
+                        listState.add(stateObject)
+                    }
+
+                    recyclerView.adapter = StatutAdapter(listState, app)
+
+                }, Response.ErrorListener {
+                    Toast.makeText(app, "error server", Toast.LENGTH_SHORT).show()
+                })
+            requestQueue.add(jsonObjectRequest)
+        }
+
+        getStatusColoc()
+        app.request(urlOutside, dataSessionSwitch, ::done)
+
+        stateSwitchBox.setOnCheckedChangeListener { _, onCheck ->
+            if(onCheck) {
+                app.request(urlOutside, dataSessionSwitch, ::done)
+                listState.clear()
+                getStatusColoc()
+            } else {
+                app.request(urlInside, dataSessionSwitch, ::done)
+                listState.clear()
+                getStatusColoc()
             }
+        }
+
+
+
+
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
+
