@@ -67,7 +67,6 @@ class StatutFragment : Fragment() {
     }
 
     fun displayStatus(v : View) {
-        println(v)
         val status = v?.findViewById<TextView>(R.id.list_statuts)
 
         val json = JSONObject(mapOf("session" to app.session))
