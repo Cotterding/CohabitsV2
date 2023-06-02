@@ -49,7 +49,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="30dp"
                 android:layout_marginStart="40dp"
-                android:text="Je ne suis pas à la colocation"
+                android:text="Je suis à la colocation"
                 android:textColor="#fdfdfd"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -67,12 +67,31 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
+            <TextView
+                android:id="@+id/list_statuts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="40dp"
+                android:textColor="#0E194D"
+                android:textSize="16sp"
+                android:text="Statuts"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/test"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/recyclerViewStatut">
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/box"
+                android:text="Mettre à jour"
+                android:onClick="DisplayStatus"/>
 
-            </androidx.recyclerview.widget.RecyclerView>
         </LinearLayout>
         
     </ScrollView>

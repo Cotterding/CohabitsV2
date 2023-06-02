@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Switch
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,29 +21,77 @@ import org.json.JSONObject
 import ovh.cohabits.cohabit1.databinding.FragmentStatutBinding
 
 class StatutFragment : Fragment() {
-    private var _binding: FragmentStatutBinding? = null
+
+    /*private var _binding: FragmentStatutBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: StatutAdapter
 
-    val students : ArrayList<StatutAdapter.StatusObject> = arrayListOf()
+    val students : ArrayList<StatutAdapter.StatusObject> = arrayListOf()*/
+
+    lateinit var app : cohabitsClass
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentStatutBinding.inflate(inflater, container, false)
+        val view = inflater.inflate(R.layout.fragment_statut, container, false)
+        view?.findViewById<Button>(R.id.test)?.setOnClickListener {
+            displayStatus(view)
+        }
+        app = (requireActivity().application as cohabitsClass)
+        val switch = view?.findViewById<Switch>(R.id.switchStatut)
+
+        //Position de départ du switch
+        switch?.setOnCheckedChangeListener { _, onCheck ->
+            val url = if (onCheck) "/student/inside" else "/student/outside"
+            val json = JSONObject(mapOf("session" to app.session))
+            app.request(url, json, null)
+            displayStatus(view)
+        }
+        displayStatus(view)
+        return view
+
+
+
+        /*_binding = FragmentStatutBinding.inflate(inflater, container, false)
         val binding = _binding ?: return null
         val root: View = binding.root
 
         recyclerView = binding.recyclerViewStatut
         synchro()
-        adapter = StatutAdapter(students, requireActivity().applicationContext)
-        return root
+        adapter = StatutAdapter(students, requireActivity().applicationContext)*/
+
+
     }
 
-    private fun synchro() {
+    fun displayStatus(v : View) {
+        println(v)
+        val status = v?.findViewById<TextView>(R.id.list_statuts)
+
+        val json = JSONObject(mapOf("session" to app.session))
+
+        fun done(response: JSONObject) {
+            val inside = response.getJSONArray("inside")
+            // Récupère les étudiants à l'intérieur dans un array
+            val arrayinside = Array(inside.length()) { inside.getString(it) }
+
+            status?.text = arrayinside.joinToString("\n")
+
+        }
+        app.request("/flat/info", json, ::done)
+    }
+
+
+
+
+
+
+
+
+
+    /*private fun synchro() {
 
         val app = (requireActivity().application as cohabitsClass)
         val listState : ArrayList<StatutAdapter.StatusObject> = arrayListOf()
@@ -54,15 +104,10 @@ class StatutFragment : Fragment() {
         dataSessionSwitch.put("session", app.session)
 
         fun done(response: JSONObject) {
-            //display the response message with a popup on screen
-            //todo: change activity is connection was successful
-            //todo: display the correct message if connection was refused
-            Toast.makeText(app, response.getString("message"), Toast.LENGTH_SHORT)
-                .show()
-            //print the response in the android studio trace window (when debugging)
-            println(response)
 
         }
+
+
 
 
         fun getStatusColoc() {
@@ -115,6 +160,8 @@ class StatutFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
+    }*/
+
+
 }
 

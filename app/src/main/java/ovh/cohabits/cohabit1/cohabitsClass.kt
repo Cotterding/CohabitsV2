@@ -51,6 +51,9 @@ class cohabitsClass() : android.app.Application() {
     //cohabits backend server IP address
     val serveraddr = "51.38.238.103"
 
+    //nickname
+    var nickname = ""
+
     //session string identifying the app connection on the server
     //session may be empty during onboarding (create account and connect)
     var session = ""
@@ -89,11 +92,17 @@ class cohabitsClass() : android.app.Application() {
     //send HTTP request
     //callback is 3rd argument
     //error management only ensure logging
-    fun request(command: String, data: JSONObject, listener: (response: JSONObject) -> Unit) {
+    fun request(command: String, data: JSONObject, listener: ((response: JSONObject) -> Unit)?){
         val url = "http://" + serveraddr + ":" + httpPort + command
         println(url)
         println(data.toString())
-        val req = JsonObjectRequest(Request.Method.POST, url, data, listener,
+        val req = JsonObjectRequest(Request.Method.POST, url, data,
+            object: Response.Listener<JSONObject> {
+                override fun onResponse(response: JSONObject) {
+                    listener?.invoke(response)
+                }
+            },
+
             object : Response.ErrorListener {
                 //this is an object used only to add the onErrorResponse function on it
                 override fun onErrorResponse(error: VolleyError) {

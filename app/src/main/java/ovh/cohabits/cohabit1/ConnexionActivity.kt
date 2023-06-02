@@ -47,6 +47,7 @@ class ConnexionActivity : AppCompatActivity() {
                 //After 8086, go back to 8080
                 app.httpPort = 8080
             }
+            println("port number: " + app.httpPort.toString())
 
             //use a "toast" object to display the text of the active port number
             /*var toast: Toast = Toast.makeText(applicationContext, app.httpPort.toString(), Toast.LENGTH_SHORT)
@@ -88,6 +89,7 @@ class ConnexionActivity : AppCompatActivity() {
 
             fun done(response: JSONObject) {
                 app.session = response.getString("session")
+                app.nickname = response.getString("nickname")
                 //display the response message with a popup on screen
                 //todo: change activity is connection was successful
                 //todo: display the correct message if connection was refused

@@ -7,33 +7,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import org.json.JSONObject
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [HomeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class HomeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    lateinit var app: cohabitsClass
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+        app = (activity?.application as cohabitsClass)
+
 
     }
 
@@ -46,12 +35,30 @@ class HomeFragment : Fragment() {
         val cardView = view?.findViewById<CardView>(R.id.card_view_box)
         cardView?.setBackgroundResource(R.drawable.box)
 
+        val button_rejoindre = view?.findViewById<Button>(R.id.button_rejoindre_colocation)
         val button_creer = view?.findViewById<Button>(R.id.button_creer_colocation)
+        //Verify if student already has a flat
+
+        val json = JSONObject(mapOf("session" to app.session))
+
+        fun done(response: JSONObject) {
+            var code = response.getString("code")
+            if (code != "0000" ) {
+                val message = view?.findViewById<TextView>(R.id.textView)
+                message?.setText("Vous êtes déjà dans une colocation")
+                button_creer?.setEnabled(false)
+                button_rejoindre?.setEnabled(false)
+
+            }
+        }
+        app.request("/student/info", json, ::done)
+
+
         button_creer?.setBackgroundTintList(this.getResources().getColorStateList(R.color.purple_500));
         button_creer?.setOnClickListener() {
             findNavController().navigate(R.id.action_home_to_add_colocation)
         }
-        val button_rejoindre = view?.findViewById<Button>(R.id.button_rejoindre_colocation)
+
         button_rejoindre?.setBackgroundTintList(this.getResources().getColorStateList(R.color.purple_500));
         button_rejoindre?.setOnClickListener() {
             findNavController().navigate(R.id.action_home_to_rejoindre_colocation)
@@ -73,10 +80,7 @@ class HomeFragment : Fragment() {
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             HomeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+
             }
     }
 
