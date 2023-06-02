@@ -5,67 +5,58 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".StatutFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-
-
-    <TextView
-        android:id="@+id/textViewStatut"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="70dp"
-        android:layout_marginBottom="10dp"
-        android:text="Mon Statut"
-        android:textColor="#0E194D"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-    
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="20dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="80dp"
         android:scrollbars="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:id="@+id/statutsLayout">
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewStatut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="30dp"
+                android:text="Mon Statut"
+                android:textColor="#0E194D"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:layout_marginTop="70dp"
+                android:layout_margin="20dp"
                 android:background="@drawable/box">
 
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="30dp"
-                android:layout_marginStart="40dp"
-                android:text="Je suis à la colocation"
-                android:textColor="#fdfdfd"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginStart="40dp"
+                    android:text="Je suis à la colocation"
+                    android:textColor="#fdfdfd"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-            <Switch
-                android:id="@+id/switchStatut"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                app:layout_constraintEnd_toEndOf="@id/linearLayout"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="25dp"
-                android:layout_marginEnd="20dp"
-                />
+                <Switch
+                    android:id="@+id/switchStatut"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    app:layout_constraintEnd_toEndOf="@id/linearLayout"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="20dp"
+                    />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -73,39 +64,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
-                android:layout_marginTop="70dp"
-                android:layout_marginBottom="10dp"
                 android:text="Colocataires présents à la coloc"
                 android:textColor="#0E194D"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
-
-
-            <TextView
-                android:id="@+id/list_statuts"
-                android:layout_width="wrap_content"
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="30dp"
-                android:layout_marginStart="40dp"
-                android:textColor="#0E194D"
-                android:textSize="16sp"
-                android:text="Statuts"
-                android:textStyle="bold" />
+                android:id="@+id/recyclerViewStatut"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
 
 
             <Button
                 android:id="@+id/test"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="200dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
                 android:background="@drawable/box"
                 android:text="Montrer qui est à la colocation"
+                android:textAllCaps="false"
                 android:onClick="DisplayStatus"/>
         </LinearLayout>
         

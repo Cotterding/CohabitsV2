@@ -1,24 +1,14 @@
 package ovh.cohabits.cohabit1
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Switch
-import android.widget.TextView
-import android.widget.Toast
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.android.volley.Request
-import com.android.volley.RequestQueue
-import com.android.volley.Response
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
 import org.json.JSONObject
-import ovh.cohabits.cohabit1.databinding.FragmentStatutBinding
 
 class StatutFragment : Fragment() {
 
@@ -67,7 +57,7 @@ class StatutFragment : Fragment() {
     }
 
     fun displayStatus(v : View) {
-        val status = v?.findViewById<TextView>(R.id.list_statuts)
+        val recycler_statut = v?.findViewById<RecyclerView>(R.id.recyclerViewStatut)
 
         val json = JSONObject(mapOf("session" to app.session))
 
@@ -75,8 +65,8 @@ class StatutFragment : Fragment() {
             val inside = response.getJSONArray("inside")
             // Récupère les étudiants à l'intérieur dans un array
             val arrayinside = Array(inside.length()) { inside.getString(it) }
-
-            status?.text = arrayinside.joinToString("\n")
+            // Affiche les étudiants à l'intérieur
+            recycler_statut?.adapter = StatutAdapter(arrayinside, app)
 
         }
         app.request("/flat/info", json, ::done)

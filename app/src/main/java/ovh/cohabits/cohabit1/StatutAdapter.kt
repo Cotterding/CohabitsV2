@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class StatutViewHolder(val view: View) : RecyclerView.ViewHolder(view)
 
-    class StatutAdapter(private val status: ArrayList<StatusObject>, val context: Context) : RecyclerView.Adapter<StatutViewHolder>() {
+    class StatutAdapter(private val list_statut: Array<String>, val context: Context) : RecyclerView.Adapter<StatutViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StatutViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
@@ -17,21 +17,15 @@ class StatutViewHolder(val view: View) : RecyclerView.ViewHolder(view)
             return StatutViewHolder(view)
         }
 
-        override fun getItemCount() = status.size
+        override fun getItemCount() = list_statut.size
 
         override fun onBindViewHolder(holder: StatutViewHolder, position: Int) {
-            val statusObject : StatusObject = status[position]
+            val statut : String = list_statut[position]
             val view = holder.itemView
             val textView = view.findViewById<TextView>(R.id.textViewStatut2)
-            textView.text = statusObject.inside.toString()
+            textView.text = "$statut est à la colocation"
         }
 
-        class StatusObject {
-            val inside : ArrayList<String> = arrayListOf()
 
-            fun setInside(item : String) {
-                inside.add(item)
-            }
 
-        }
 }
