@@ -7,15 +7,14 @@
     android:id="@+id/containerTache"
     >
 
-    <!-- TODO: Update blank fragment layout -->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="20dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
         android:scrollbars="vertical"
         android:orientation="vertical"
         android:id="@+id/layoutTache"
@@ -24,9 +23,14 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:id="@+id/buttonAddTache"
-            android:text="Créer une Tache"/>
+            android:textAllCaps="false"
+            android:textColor="#0E194D"
+            android:text="Ajoutez une tâche"
+            android:background="#ececec"
+            android:drawableRight="@drawable/baseline_add_24"/>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/recyclerViewTache">
