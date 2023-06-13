@@ -54,6 +54,7 @@ class TacheFragment : Fragment() {
         app = (requireActivity().application as cohabitsClass)
         val buttonAddTache = view?.findViewById<Button>(R.id.buttonAddTache)
         recyclerViewTache = view.findViewById(R.id.recyclerViewTache)
+        val layoutTache = view.findViewById<View>(R.id.layoutTache)
         buttonAddTache?.backgroundTintList = this.getResources().getColorStateList(R.color.purple_500)
         tache = arguments?.getStringArrayList("task")
         student = arguments?.getStringArrayList("student")
@@ -74,6 +75,8 @@ class TacheFragment : Fragment() {
             parentFragmentManager.beginTransaction()
                 .replace(R.id.containerTache, fragment)
                 .commit()
+            layoutTache?.visibility = View.INVISIBLE
+
         }
 
 
