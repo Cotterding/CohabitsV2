@@ -39,6 +39,9 @@ class ComptesFragment : Fragment() {
             addExpense(view)
         }
 
+        //lauch history
+
+        history(view)
         return view
     }
 
@@ -57,6 +60,25 @@ class ComptesFragment : Fragment() {
         }
         app.request(url, json, ::done)
 
+    }
+
+    fun history(v : View) {
+        val json = JSONObject(mapOf("session" to app.session))
+
+        var url = "/flat/spending"
+        fun done(response: JSONObject) {
+            val data = response.getJSONArray("spending")
+            var display = ""
+            for (i in 0 until data.length()) {
+                val record = data.getJSONArray(i)
+                display += record.getString(1) + " a payé " +
+                        record.getString(2) + " € pour " +
+                        record.getString(3) + "\n"
+            }
+            val balanceView = v?.findViewById<TextView>(R.id.historique)
+            balanceView?.text = display
+        }
+        app.request(url, json, ::done)
     }
 
 }
