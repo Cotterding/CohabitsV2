@@ -1,10 +1,18 @@
 package ovh.cohabits.cohabit1
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.toolbox.Volley
+import org.json.JSONObject
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -18,8 +26,15 @@ private const val ARG_PARAM2 = "param2"
  */
 class TacheFragment : Fragment() {
     // TODO: Rename and change types of parameters
+    lateinit var app : cohabitsClass
     private var param1: String? = null
     private var param2: String? = null
+    private var tache : ArrayList<String>? = null
+    private var student : ArrayList<String>? = null
+
+    lateinit var recyclerViewTache : RecyclerView
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,15 +42,78 @@ class TacheFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
     }
 
+    @SuppressLint("ResourceType", "MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val view = inflater.inflate(R.layout.fragment_tache, container, false)
+        app = (requireActivity().application as cohabitsClass)
+        val buttonAddTache = view?.findViewById<Button>(R.id.buttonAddTache)
+        recyclerViewTache = view.findViewById(R.id.recyclerViewTache)
+        buttonAddTache?.backgroundTintList = this.getResources().getColorStateList(R.color.purple_500)
+        tache = arguments?.getStringArrayList("task")
+        student = arguments?.getStringArrayList("student")
+        Log.d("TAG", tache.toString())
+        recyclerViewTache.layoutManager = GridLayoutManager(app, GridLayoutManager.VERTICAL)
+        if(tache == null) {
+            synchro()
+        } else {
+            recyclerViewTache.adapter = tache?.let { student?.let { it1 ->
+                TacheAdapter(it,requireContext().applicationContext,
+                    it1
+                )
+            } }
+        }
+
+        buttonAddTache?.setOnClickListener {
+            val fragment = newInstance()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.containerTache, fragment)
+                .commit()
+        }
+
+
+
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tache, container, false)
+        return view
     }
+    fun synchro() {
+        val requestQueue = app.queue ?: Volley.newRequestQueue(app)
+        app.queue = requestQueue
+
+        fun getToTache() {
+            val json = JSONObject(mapOf("session" to app.session))
+            val listTache : ArrayList<String>  = arrayListOf()
+            val lisStudent : ArrayList<String> = arrayListOf()
+            fun done(response: JSONObject) {
+                val tasks = response.getJSONArray("tasks")
+                // Récupère les étudiants à l'intérieur dans un array
+                for (i in 0 until tasks.length()) {
+                    val tache = tasks.getJSONArray(i).getString(0)
+                    val student = tasks.getJSONArray(i).getString(1)
+                    listTache.add(tache)
+                    lisStudent.add(student)
+                }
+                Log.d("TAG1", listTache.toString())
+                recyclerViewTache.adapter =
+                    TacheAdapter(listTache, requireContext().applicationContext, lisStudent)
+
+
+            }
+            app.request("/task/list", json, ::done)
+
+
+        }
+
+        getToTache()
+
+    }
+
 
     companion object {
         /**
@@ -55,5 +133,9 @@ class TacheFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+        fun newInstance(): AddTacheColocation {
+            return AddTacheColocation()
+        }
     }
+
 }
