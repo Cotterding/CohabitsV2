@@ -12,12 +12,15 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
-import android.widget.CheckedTextView
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONObject
 import ovh.cohabits.cohabit1.databinding.FragmentAddTachesBinding
@@ -36,6 +39,7 @@ class AddTacheColocation : Fragment() {
     var period : Int = 0
     private lateinit var buttonAddTache : Button
     var coloc : String = ""
+    lateinit var layoutAddTache : View
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -62,6 +66,7 @@ class AddTacheColocation : Fragment() {
 
         val binding = _binding ?: return null
         val root: View = binding.root
+        layoutAddTache = root.findViewById<View>(R.id.containerAddTache)
         spinner = binding.spinner
         spinnerTache= binding.spinnerTache
         buttonAddTache = binding.buttonAddTache
@@ -69,118 +74,121 @@ class AddTacheColocation : Fragment() {
         return root
     }
 
-       fun synchro() {
-           val requestQueue = app.queue ?: Volley.newRequestQueue(app)
-           app.queue = requestQueue
+    fun synchro() {
+        val requestQueue = app.queue ?: Volley.newRequestQueue(app)
+        app.queue = requestQueue
 
 
-           fun getColocTache() {
-               val command = "/flat/info"
-               val url = "http://" + app.serveraddr + ":" + app.httpPort + command
-               val data = JSONObject()
-               data.put("session", app?.session)
-               val jsonObjectRequest =
-                   JsonObjectRequest(Request.Method.DEPRECATED_GET_OR_POST, url, data,
-                       Response.Listener {
-                           for (i in 0 until it.getJSONArray("friends").length()) {
-                               val result = it.getJSONArray("friends").getString(i)
-                               listColoc.add(result)
-                           }
-                           ArrayAdapter(listColoc, requireContext().applicationContext, spinner)
+        fun getColocTache() {
+            val command = "/flat/info"
+            val url = "http://" + app.serveraddr + ":" + app.httpPort + command
+            val data = JSONObject()
+            data.put("session", app?.session)
+            val jsonObjectRequest =
+                JsonObjectRequest(Request.Method.DEPRECATED_GET_OR_POST, url, data,
+                    Response.Listener {
+                        for (i in 0 until it.getJSONArray("friends").length()) {
+                            val result = it.getJSONArray("friends").getString(i)
+                            listColoc.add(result)
+                        }
+                        ArrayAdapter(listColoc, requireContext().applicationContext, spinner)
 
-                       }, Response.ErrorListener {
-                           Toast.makeText(app, "error server", Toast.LENGTH_SHORT).show()
-                       })
-               requestQueue.add(jsonObjectRequest)
-           }
+                    }, Response.ErrorListener {
+                        Toast.makeText(app, "error server", Toast.LENGTH_SHORT).show()
+                    })
+            requestQueue.add(jsonObjectRequest)
+        }
 
 
-           fun getTacheColocation() {
-               val command = "/task/standard"
-               val url = "http://" + app.serveraddr + ":" + app.httpPort + command
-               val data = JSONObject()
-               data.put("session", app?.session)
-               val jsonObjectRequest =
-                   JsonObjectRequest(
-                       Request.Method.DEPRECATED_GET_OR_POST, url, data,
-                       Response.Listener {
-                            for(i in 0 until it.getJSONArray("tasks").length()) {
-                                val result = it.getJSONArray("tasks").getJSONArray(i).getString(0)
-                                listTache.add(result)
+        fun getTacheColocation() {
+            val command = "/task/standard"
+            val url = "http://" + app.serveraddr + ":" + app.httpPort + command
+            val data = JSONObject()
+            data.put("session", app?.session)
+            val jsonObjectRequest =
+                JsonObjectRequest(
+                    Request.Method.DEPRECATED_GET_OR_POST, url, data,
+                    Response.Listener {
+                        for(i in 0 until it.getJSONArray("tasks").length()) {
+                            val result = it.getJSONArray("tasks").getJSONArray(i).getString(0)
+                            listTache.add(result)
+
+                        }
+
+                        ArrayAdapter(listTache, requireContext().applicationContext, spinnerTache).run {
+                            spinnerTache.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                                override fun onItemSelected(
+                                    p0: AdapterView<*>?,
+                                    p1: View?,
+                                    p2: Int,
+                                    p3: Long
+                                ) {
+                                    period = it.getJSONArray("tasks").getJSONArray(p2).getInt(1)
+                                    points = it.getJSONArray("tasks").getJSONArray(p2).getInt(2)
+                                }
+
+                                override fun onNothingSelected(p0: AdapterView<*>?) {
+                                    TODO("Not yet implemented")
+                                }
 
                             }
+                        }
 
-                          ArrayAdapter(listTache, requireContext().applicationContext, spinnerTache).run {
-                                spinnerTache.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                                    override fun onItemSelected(
-                                        p0: AdapterView<*>?,
-                                        p1: View?,
-                                        p2: Int,
-                                        p3: Long
-                                    ) {
-                                        period = it.getJSONArray("tasks").getJSONArray(p2).getInt(1)
-                                        points = it.getJSONArray("tasks").getJSONArray(p2).getInt(2)
-                                    }
+                    },
+                    Response.ErrorListener {
 
-                                    override fun onNothingSelected(p0: AdapterView<*>?) {
-                                        TODO("Not yet implemented")
-                                    }
+                    })
 
-                                }
-                          }
+            requestQueue.add(jsonObjectRequest)
 
-                       },
-                       Response.ErrorListener {
+        }
 
-                       })
+        fun addTache()  {
+            val json = JSONObject(mapOf("session" to app.session))
+            val listTache : ArrayList<String>  = arrayListOf()
+            val listStudent : ArrayList<String>  = arrayListOf()
+            fun done(response: JSONObject) {
+                val tasks = response.getJSONArray("tasks")
+                // Récupère les étudiants à l'intérieur dans un array
+                for(i in 0 until tasks.length()) {
+                    val tache = tasks.getJSONArray(i).getString(0)
+                    val student = tasks.getJSONArray(i).getString(1)
+                    listTache.add(tache)
+                    listStudent.add(student)
 
-               requestQueue.add(jsonObjectRequest)
+                }
+                buttonAddTache.setOnClickListener {
+                    if(listTache.contains(spinnerTache.selectedItem.toString())) {
+                        println(listTache.contains(spinnerTache.selectedItem.toString()))
+                        Toast.makeText(requireContext().applicationContext, "Erreur la tache est deja crée", Toast.LENGTH_SHORT).show()
+                    } else {
+                        listTache.add(spinnerTache.selectedItem.toString())
+                        listStudent.add(spinner.selectedItem.toString())
+                        val data = JSONObject()
+                        data.put("session", app?.session)
+                        data.put("name", spinnerTache.selectedItem)
+                        data.put("points", points)
+                        data.put("period", period)
+                        data.put("student", spinner.selectedItem.toString())
+                        app.request("/task/create", data, ::doneTache)
+                        val fragment = newInstance(listTache, listStudent)
+                        parentFragmentManager.beginTransaction()
+                            .replace(R.id.containerTache, fragment)
+                            .commit()
+                    }
+                }
+            }
 
-           }
-
-           fun addTache()  {
-               val json = JSONObject(mapOf("session" to app.session))
-               val listTache : ArrayList<String>  = arrayListOf()
-               val listStudent : ArrayList<String>  = arrayListOf()
-               fun done(response: JSONObject) {
-                   val tasks = response.getJSONArray("tasks")
-                   // Récupère les étudiants à l'intérieur dans un array
-                       for(i in 0 until tasks.length()) {
-                           val tache = tasks.getJSONArray(i).getString(0)
-                           val student = tasks.getJSONArray(i).getString(1)
-                           listTache.add(tache)
-                           listStudent.add(student)
-                       }
-                   Log.d("TAG1", listTache.toString())
-                   buttonAddTache.setOnClickListener {
-                       val data = JSONObject()
-                       data.put("session", app?.session)
-                       data.put("name", spinnerTache.selectedItem)
-                       data.put("points", points)
-                       data.put("period", period)
-                       data.put("student", spinner.selectedItem.toString())
-                       listTache.add(spinnerTache.selectedItem.toString())
-                       listStudent.add(spinner.selectedItem.toString())
-                       app.request("/task/create", data, ::doneTache)
-                       val fragment = newInstance(listTache, listStudent)
-                       parentFragmentManager.beginTransaction()
-                           .replace(R.id.containerTache, fragment)
-                           .commit()
+            app.request("/task/list", json, ::done)
 
 
-                   }
-               }
+        }
 
-               app.request("/task/list", json, ::done)
+        getColocTache()
+        getTacheColocation()
+        addTache()
 
-
-           }
-
-           getColocTache()
-           getTacheColocation()
-           addTache()
-
-       }
+    }
 
 
     fun doneTache(response: JSONObject) {
@@ -191,8 +199,6 @@ class AddTacheColocation : Fragment() {
         println(response)
 
     }
-
-
 
     private fun ArrayAdapter(tache : ArrayList<String>, context : Context, spinner: Spinner) {
         val adapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, tache)

@@ -7,10 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONObject
 
@@ -55,7 +59,7 @@ class TacheFragment : Fragment() {
         val buttonAddTache = view?.findViewById<Button>(R.id.buttonAddTache)
         recyclerViewTache = view.findViewById(R.id.recyclerViewTache)
         val layoutTache = view.findViewById<View>(R.id.layoutTache)
-        buttonAddTache?.backgroundTintList = this.getResources().getColorStateList(R.color.gris)
+        buttonAddTache?.backgroundTintList = this.getResources().getColorStateList(R.color.purple_500)
         tache = arguments?.getStringArrayList("task")
         student = arguments?.getStringArrayList("student")
         Log.d("TAG", tache.toString())
@@ -63,11 +67,25 @@ class TacheFragment : Fragment() {
         if(tache == null) {
             synchro()
         } else {
-            recyclerViewTache.adapter = tache?.let { student?.let { it1 ->
+            val adapter =tache?.let { student?.let { it1 ->
                 TacheAdapter(it,requireContext().applicationContext,
                     it1
                 )
             } }
+
+            adapter?.setOnItemClickListener(object : TacheAdapter.OnItemClickListener {
+                override fun onItemClick(tache: String) {
+                    val data = JSONObject()
+                    data.put("session", app?.session)
+                    data.put("name", tache)
+                    Log.d("TAG2",tache)
+                    app.request("/task/delete", data, ::doneTache)
+                    getToTache()
+                }
+
+            })
+
+            recyclerViewTache.adapter = adapter
         }
 
         buttonAddTache?.setOnClickListener {
@@ -76,7 +94,6 @@ class TacheFragment : Fragment() {
                 .replace(R.id.containerTache, fragment)
                 .commit()
             layoutTache?.visibility = View.INVISIBLE
-
         }
 
 
@@ -88,32 +105,77 @@ class TacheFragment : Fragment() {
     fun synchro() {
         val requestQueue = app.queue ?: Volley.newRequestQueue(app)
         app.queue = requestQueue
-
-        fun getToTache() {
-            val json = JSONObject(mapOf("session" to app.session))
-            val listTache : ArrayList<String>  = arrayListOf()
-            val lisStudent : ArrayList<String> = arrayListOf()
-            fun done(response: JSONObject) {
-                val tasks = response.getJSONArray("tasks")
-                // Récupère les étudiants à l'intérieur dans un array
-                for (i in 0 until tasks.length()) {
-                    val tache = tasks.getJSONArray(i).getString(0)
-                    val student = tasks.getJSONArray(i).getString(1)
-                    listTache.add(tache)
-                    lisStudent.add(student)
-                }
-                Log.d("TAG1", listTache.toString())
-                recyclerViewTache.adapter =
-                    TacheAdapter(listTache, requireContext().applicationContext, lisStudent)
+        getToTache()
+        deleteTache()
 
 
+    }
+
+    fun getToTache() {
+        val json = JSONObject(mapOf("session" to app.session))
+        val listTache : ArrayList<String>  = arrayListOf()
+        val lisStudent : ArrayList<String> = arrayListOf()
+        fun done(response: JSONObject) {
+            val tasks = response.getJSONArray("tasks")
+            // Récupère les étudiants à l'intérieur dans un array
+            for (i in 0 until tasks.length()) {
+                val tache = tasks.getJSONArray(i).getString(0)
+                val student = tasks.getJSONArray(i).getString(1)
+                listTache.add(tache)
+                lisStudent.add(student)
             }
-            app.request("/task/list", json, ::done)
+            Log.d("TAG1", listTache.toString())
+            recyclerViewTache.adapter =
+                TacheAdapter(listTache, requireContext().applicationContext, lisStudent)
 
 
         }
+        app.request("/task/list", json, ::done)
 
-        getToTache()
+    }
+
+    fun deleteTache(){
+        val json = JSONObject(mapOf("session" to app.session))
+        val listTache: ArrayList<String> = arrayListOf()
+        val lisStudent: ArrayList<String> = arrayListOf()
+
+        fun done(response: JSONObject) {
+            val tasks = response.getJSONArray("tasks")
+            // Récupère les étudiants à l'intérieur dans un array
+            for (i in 0 until tasks.length()) {
+                val body = tasks.getJSONArray(i)
+                listTache.add(body.getString(0))
+                lisStudent.add(body.getString(1))
+            }
+            val adapter = TacheAdapter(listTache, requireContext().applicationContext, lisStudent)
+            adapter.setOnItemClickListener(object : TacheAdapter.OnItemClickListener{
+                override fun onItemClick(tache: String) {
+                    val data = JSONObject()
+                    data.put("session", app?.session)
+                    data.put("name", tache)
+                    Log.d("TAG2",tache)
+                    app.request("/task/delete", data, ::doneTache)
+                    getToTache()
+                }
+
+            })
+
+            recyclerViewTache.adapter = adapter
+
+
+        }
+        app.request("/task/list", json, ::done)
+
+
+    }
+
+    fun doneTache(response: JSONObject) {
+        findNavController().navigate(R.id.navigation_tache)
+        //display the response message with a popup on screen
+        //todo: change activity is connection was successful
+        //todo: display the correct message if connection was refused
+        //print the response in the android studio trace window (when debugging)
+        println(response)
 
     }
 
