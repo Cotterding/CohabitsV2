@@ -61,7 +61,15 @@
         android:id="@+id/navigation_comptes"
         android:name="ovh.cohabits.cohabit1.ComptesFragment"
         android:label="@string/title_comptes"
-        tools:layout="@layout/fragment_comptes" />
+        tools:layout="@layout/fragment_comptes" >
+        <action
+            android:id="@+id/action_comptes_to_add_depense"
+            app:destination="@id/add_depense"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
 
     <fragment
         android:id="@+id/add_tache"
@@ -70,6 +78,16 @@
         <action
             android:id="@+id/action_add_tache_to_navigation_tache"
             app:destination="@id/navigation_tache" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/add_depense"
+        android:name="ovh.cohabits.cohabit1.AddDepenseFragment"
+        tools:layout="@layout/fragment_add_depense">
+
+        <action
+            android:id="@+id/action_add_depense_to_navigation_comptes"
+            app:destination="@id/navigation_comptes" />
     </fragment>
 
 

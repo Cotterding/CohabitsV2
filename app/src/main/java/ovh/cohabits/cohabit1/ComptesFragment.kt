@@ -2,6 +2,7 @@ package ovh.cohabits.cohabit1
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import org.json.JSONObject
 
 
@@ -34,32 +37,15 @@ class ComptesFragment : Fragment() {
             startActivity(intent)
         }
 
-        //launch AddExpense
-        view?.findViewById<Button>(R.id.button_add_spent)?.setOnClickListener {
-            addExpense(view)
+        view?.findViewById<Button>(R.id.depense_button)?.setOnClickListener {
+            findNavController().navigate(R.id.action_comptes_to_add_depense)
         }
+
 
         //lauch history
 
         history(view)
         return view
-    }
-
-    fun addExpense(v : View) {
-
-        val amount = v?.findViewById<EditText>(R.id.amount)?.text.toString().toFloat()
-        val why = v?.findViewById<EditText>(R.id.description)?.text.toString()
-
-        val json = JSONObject(mapOf("session" to app.session, "amount" to amount, "why" to why))
-
-        var url = "/student/spend"
-
-        fun done(response: JSONObject) {
-
-            Toast.makeText(requireContext().applicationContext, "Dépense prise en compte", Toast.LENGTH_SHORT).show()
-        }
-        app.request(url, json, ::done)
-
     }
 
     fun history(v : View) {
@@ -75,7 +61,9 @@ class ComptesFragment : Fragment() {
                         record.getString(2) + " € pour " +
                         record.getString(3) + "\n"
             }
-            val balanceView = v?.findViewById<TextView>(R.id.historique)
+            Log.d("display", data.toString())
+            v.findViewById<RecyclerView>(R.id.recycler_view)?.adapter = DepenseAdapter(data, app)
+            val balanceView = v.findViewById<TextView>(R.id.historique)
             balanceView?.text = display
         }
         app.request(url, json, ::done)
