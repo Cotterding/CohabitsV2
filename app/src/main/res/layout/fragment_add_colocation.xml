@@ -9,17 +9,38 @@
 
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/textViewTaColocation"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp"
-        android:text="Ta colocation"
-        android:textColor="#0E194D"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/textViewTaColocation"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Ta colocation"
+            android:gravity="center"
+            android:textColor="#0E194D"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_height="10dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:textAllCaps="false"
+            android:textSize="15sp"
+            app:icon="?attr/actionModeCloseDrawable" />
+
+    </LinearLayout>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view_box_add_colocation"
