@@ -2,7 +2,7 @@
     <string name="app_name">Cohabit1</string>
     <string name="title_home">Home</string>
     <string name="title_statut">Satut</string>
-    <string name="title_tache">Taches</string>
+    <string name="title_tache">Tâches</string>
     <string name="title_comptes">Comptes</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

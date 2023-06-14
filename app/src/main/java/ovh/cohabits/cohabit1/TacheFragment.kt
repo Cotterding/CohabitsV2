@@ -59,7 +59,7 @@ class TacheFragment : Fragment() {
         val buttonAddTache = view?.findViewById<Button>(R.id.buttonAddTache)
         recyclerViewTache = view.findViewById(R.id.recyclerViewTache)
         val layoutTache = view.findViewById<View>(R.id.layoutTache)
-        buttonAddTache?.backgroundTintList = this.getResources().getColorStateList(R.color.purple_500)
+        buttonAddTache?.backgroundTintList = this.getResources().getColorStateList(R.color.gris)
         tache = arguments?.getStringArrayList("task")
         student = arguments?.getStringArrayList("student")
         Log.d("TAG", tache.toString())

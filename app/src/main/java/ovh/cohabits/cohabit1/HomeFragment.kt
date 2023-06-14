@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.text.TextUtils.replace
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,14 +11,10 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.android.volley.Response
 import org.json.JSONObject
 
 class HomeFragment : Fragment() {
@@ -51,6 +46,7 @@ class HomeFragment : Fragment() {
         val recyclerViewStudent = view?.findViewById<RecyclerView>(R.id.recyclerViewStudent)
         recyclerViewStudent?.layoutManager = GridLayoutManager(app, GridLayoutManager.VERTICAL)
         val buttonDeconnexion = view?.findViewById<Button>(R.id.buttonDeconnexion)
+        val textNomColoc = view?.findViewById<TextView>(R.id.textViewColocation)
 
         val json = JSONObject(mapOf("session" to app.session))
 
@@ -62,9 +58,13 @@ class HomeFragment : Fragment() {
                 //message?.setText("Vous êtes déjà dans une colocation")
                 button_creer?.visibility = View.INVISIBLE
                 button_rejoindre?.visibility = View.INVISIBLE
-                titleText?.visibility = View.INVISIBLE
+                titleText?.visibility = View.VISIBLE
                 recyclerViewStudent?.visibility = View.VISIBLE
                 textViewTaColocation?.text = "Ta colocation : $code "
+                titleText?.text = "Les membres de la colocation :"
+                val layoutParams = cardView!!.layoutParams
+                layoutParams.height = 600 // nouvelle largeur en pixels
+                cardView!!.layoutParams = layoutParams
 
 
             }

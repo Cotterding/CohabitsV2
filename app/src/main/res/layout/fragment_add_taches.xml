@@ -47,7 +47,7 @@
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="15dp"
             android:textSize="14sp"
-            android:background="@drawable/spinner_selector"
+            android:background="@drawable/edit_edittext"
             />
 
         <TextView
@@ -58,7 +58,7 @@
             android:textColor="#0E194D"
             android:textSize="12dp"
             android:textStyle="bold"
-            android:text="Tache" />
+            android:text="Tâche" />
 
         <Spinner
             android:textSize="14sp"
@@ -69,7 +69,7 @@
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="15dp"
             android:layout_marginTop="200dp"
-            android:background="@drawable/spinner_selector"
+            android:background="@drawable/edit_edittext"
             >
 
         </Spinner>
