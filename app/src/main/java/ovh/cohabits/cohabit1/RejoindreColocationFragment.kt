@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.navigation.fragment.findNavController
 import org.json.JSONObject
 
 // TODO: Rename parameter arguments, choose names that match
@@ -63,6 +64,7 @@ class RejoindreColocationFragment : Fragment() {
                 //add here the switch to next activity or fragment
             }
             app?.request(url, data, ::done)
+            findNavController().navigate(R.id.navigation_home)
         }
         return view
     }
